@@ -26,3 +26,8 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+use App\Http\Controllers\CommentController;
+
+Route::post('/posts/{postId}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/posts/{postId}/comments', [CommentController::class, 'index'])->name('comments.index');

@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in!') }}<br>
+                    <a href="{{ route('posts.index') }}" class="btn btn-secondary">All Post</a>
                 </div>
             </div>
         </div>
