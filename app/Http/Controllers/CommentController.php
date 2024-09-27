@@ -25,6 +25,21 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
+    public function storeReply(Request $request, Comment $comment)
+    {
+        $request->validate([
+            'content' => 'required',
+        ]);
+
+        Comment::create([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+            'post_id' => $comment->post_id,
+            'parent_id' => $comment->id, // Set parent_id to the current comment's ID
+        ]);
+
+        return redirect()->back()->with('success', 'Reply added successfully.');
+    }
 
     public function index($postId)
     {

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,10 +49,16 @@ class PostController extends Controller
 
     // Show a single post
     public function show(Post $post)
-    {
-        // Fetch the post with the user who created it
-        return view('posts.show', compact('post'));
-    }
+{
+    // Fetch only top-level comments with their replies and users
+    $comments = Comment::where('post_id', $post->id)
+        ->whereNull('parent_id') // Fetch only top-level comments
+        ->with('replies.user') // Load replies and their users
+        ->get();
+
+    return view('posts.show', compact('post', 'comments'));
+}
+
 
     // Show the form for editing a post
     public function edit(Post $post)
