@@ -6,7 +6,7 @@
         <p>{{ $post->content }}</p>
         <p>Posted by: <strong>{{ $post->user->name }}</strong></p> <!-- Display post creator's name -->
 
-        <a href="{{ route('posts.index', $post) }}" class="btn btn-info btn-sm">Back to All Posts</a>
+        <a href="{{ route('posts.index', $post) }}" class="btn btn-info btn-sm me-1">Back to All Posts</a>
         <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">Edit</a>
         <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">
             @csrf
@@ -22,7 +22,7 @@
             <div class="form-group">
                 <textarea name="content" class="form-control" rows="3" required placeholder="Write a comment..."></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Add Comment</button>
+            <button type="submit" class="btn btn-primary mt-2">Add Comment</button>
         </form>
 
         <hr>

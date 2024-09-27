@@ -1,6 +1,6 @@
 {{-- resources/views/comments/replies.blade.php --}}
 @foreach ($comments as $reply)
-    <div style="margin-left: 30px; border-left: 3px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <div style="margin-left: 30px; border-left: 3px solid #ccc; padding: 10px;">
         <strong>{{ $reply->user->name }}</strong>
         <p>{{ $reply->content }}</p>
 

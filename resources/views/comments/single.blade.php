@@ -1,4 +1,4 @@
-<div style="border-left: 3px solid #000000; padding: 10px; margin-bottom: 10px;">
+<div style="border-left: 3px solid #000000; padding: 10px;">
     <strong>{{ $comment->user->name }}</strong>
     <p>{{ $comment->content }}</p>
 
