@@ -5,6 +5,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -36,11 +37,22 @@ class PostController extends Controller
             'content' => 'required',
         ]);
 
+        // Generate a slug from the title
+    $slug = Str::slug($request->title, '-');
+
+    // Ensure the slug is unique by appending a number if it exists
+    $originalSlug = $slug;
+    $counter = 1;
+    while (Post::where('slug', $slug)->exists()) {
+        $slug = $originalSlug . '-' . $counter;
+        $counter++;
+    }
 
         // Create post and associate it with the currently authenticated user
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
+            'slug' => $slug, // Store the slug
             'user_id' => Auth::id(), // Assign the authenticated user's ID
         ]);
 

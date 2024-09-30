@@ -22,7 +22,7 @@
                         <td>{{ $post->title }}</td>
                         <td> <strong>{{ $post->user->name }}</strong></td>
                         <td>
-                            <a href="{{ route('posts.show', $post) }}" class="btn btn-info btn-sm me-1">View</a>
+                            <a href="{{ route('posts.show', $post->slug) }}" class="btn btn-info btn-sm me-1">View</a>
                             @auth
                                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">

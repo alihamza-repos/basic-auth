@@ -38,3 +38,4 @@ Route::post('comments/{comment}/like', [CommentController::class, 'like'])->name
 
 // Other routes for posts (if you haven't already)
 Route::resource('posts', PostController::class);
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
