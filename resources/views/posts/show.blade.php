@@ -7,12 +7,15 @@
         <p>Posted by: <strong>{{ $post->user->name }}</strong></p> <!-- Display post creator's name -->
 
         <a href="{{ route('posts.index', $post) }}" class="btn btn-info btn-sm me-1">Back to All Posts</a>
-        <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">Edit</a>
-        <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-        </form>
+        @auth
+            <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">Edit</a>
+            <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        @endauth
+
 
         <hr> <!-- Horizontal line for separation -->
 

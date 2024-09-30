@@ -17,7 +17,8 @@ class PostController extends Controller
     public function index()
     {
         // Fetch posts along with their related user
-        $posts = Post::with('user')->get();
+        // $posts = Post::with('user')->get();
+        $posts = Post::all();
         return view('posts.index', compact('posts'));
     }
 
@@ -69,12 +70,22 @@ class PostController extends Controller
     // Update a post
     public function update(Request $request, Post $post)
     {
+        // $request->validate([
+        //     'title' => 'required',
+        //     'content' => 'required',
+        // ]);
+
+        // $post->update($request->all());
+        $this->authorize('update', $post); // Check if the user can update
+
         $request->validate([
             'title' => 'required',
             'content' => 'required',
         ]);
 
-        $post->update($request->all());
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->save();
 
         return redirect()->route('posts.index')
                          ->with('success', 'Post updated successfully.');
@@ -83,6 +94,8 @@ class PostController extends Controller
     // Delete a post
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post); // Check if the user can delete
+
         $post->delete();
 
         return redirect()->route('posts.index')
