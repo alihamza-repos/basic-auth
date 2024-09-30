@@ -18,8 +18,14 @@ class PostController extends Controller
     public function index()
     {
         // Fetch posts along with their related user
-        // $posts = Post::with('user')->get();
         $posts = Post::all();
+
+        // Check if the request expects a JSON response (API) or a view (web)
+        if (request()->wantsJson()) {
+            return response()->json($posts);
+        }
+
+        // Return the view for web requests
         return view('posts.index', compact('posts'));
     }
 
@@ -38,40 +44,48 @@ class PostController extends Controller
         ]);
 
         // Generate a slug from the title
-    $slug = Str::slug($request->title, '-');
+        $slug = Str::slug($request->title, '-');
 
-    // Ensure the slug is unique by appending a number if it exists
-    $originalSlug = $slug;
-    $counter = 1;
-    while (Post::where('slug', $slug)->exists()) {
-        $slug = $originalSlug . '-' . $counter;
-        $counter++;
-    }
+        // Ensure the slug is unique by appending a number if it exists
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
 
         // Create post and associate it with the currently authenticated user
-        Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'slug' => $slug, // Store the slug
             'user_id' => Auth::id(), // Assign the authenticated user's ID
         ]);
 
-        return redirect()->route('posts.index')
-                         ->with('success', 'Post created successfully.');
+        // Return JSON response for API requests or redirect for web requests
+        if ($request->wantsJson()) {
+            return response()->json($post, 201); // Return the created post as JSON
+        }
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
 
     // Show a single post
     public function show(Post $post)
-{
-    // Fetch only top-level comments with their replies and users
-    $comments = Comment::where('post_id', $post->id)
-        ->whereNull('parent_id') // Fetch only top-level comments
-        ->with('replies.user') // Load replies and their users
-        ->get();
+    {
+        // Fetch only top-level comments with their replies and users
+        $comments = Comment::where('post_id', $post->id)
+            ->whereNull('parent_id') // Fetch only top-level comments
+            ->with('replies.user') // Load replies and their users
+            ->get();
 
-    return view('posts.show', compact('post', 'comments'));
-}
+        // Check if the request expects a JSON response or a view
+        if (request()->wantsJson()) {
+            return response()->json(['post' => $post, 'comments' => $comments]);
+        }
 
+        return view('posts.show', compact('post', 'comments'));
+    }
 
     // Show the form for editing a post
     public function edit(Post $post)
@@ -82,12 +96,6 @@ class PostController extends Controller
     // Update a post
     public function update(Request $request, Post $post)
     {
-        // $request->validate([
-        //     'title' => 'required',
-        //     'content' => 'required',
-        // ]);
-
-        // $post->update($request->all());
         $this->authorize('update', $post); // Check if the user can update
 
         $request->validate([
@@ -99,8 +107,12 @@ class PostController extends Controller
         $post->content = $request->input('content');
         $post->save();
 
-        return redirect()->route('posts.index')
-                         ->with('success', 'Post updated successfully.');
+        // Return JSON response or redirect based on request type
+        if ($request->wantsJson()) {
+            return response()->json($post);
+        }
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
     // Delete a post
@@ -110,7 +122,11 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->route('posts.index')
-                         ->with('success', 'Post deleted successfully.');
+        // Return JSON response or redirect based on request type
+        if (request()->wantsJson()) {
+            return response()->json(null, 204); // No content response for successful delete
+        }
+
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }
