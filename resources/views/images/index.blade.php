@@ -1,20 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1>Uploaded Images</h1>
 
-<h1>Uploaded Images</h1>
-
-@foreach ($images as $image)
-    <div>
-        {{-- for testing --}}
-        {{-- <img src="{{ asset('public/storage/images/2WquhzyHUiWlCheBmREYVVPIPf9lMalDYsv28xWy.png') }}" alt="Image" style="max-width: 200px; max-height: 200px;"> --}}
-
-        <img src="{{ $image->url }}" alt="Image" style="max-width: 200px; max-height: 200px;">
-
-        {{-- <img src="{{ asset('public/storage/' . $image) }}" alt="Image" style="max-width: 200px; max-height: 200px;"> --}}
-    </div>
-@endforeach
-
-<a href="{{ route('images.upload') }}">Upload More Images</a>
-
+    @if (session('success'))
+        <div>{{ session('success') }}</div>
+    @endif
+<div class="container">
+    @if ($images->isEmpty())
+        <p>No images uploaded yet.</p>
+    @else
+        <div class=row>
+            @foreach ($images as $image)
+                <div class="col-md-2">
+                    <img src="{{ asset($image->url) }}" alt="Uploaded Image"
+                        style="width:100%; height:200px; object-fit:cover; border-radius:5px;">
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
 @endsection
