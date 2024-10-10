@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -51,6 +52,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -63,10 +65,34 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        //dd($data);
+
+        // Check if an image is uploaded
+        if (isset($data['image'])) {
+            // Get the original filename
+            $originalName = $data['image']->getClientOriginalName();
+
+            // Sanitize the filename by replacing spaces with dashes
+            $sanitizedName = str_replace(' ', '-', $originalName);
+            // Store the image in the public directory and get the file path
+            $imagePath = $data['image']->storeAs('profile', $sanitizedName, 'public');
+
+            // Construct the full URL for the image
+            $imageUrl = 'profile/' . $sanitizedName; // This is the path to store in the database
+
+        } else {
+            // Default image or null
+            $imageUrl = null;
+        }
+
+        
+        // Create the user with the image path
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'image' => $imageUrl, // Store the image path in the database
         ]);
     }
 }

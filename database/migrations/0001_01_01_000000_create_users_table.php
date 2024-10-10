@@ -24,9 +24,11 @@ return new class extends Migration
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamp('created_at')->nullable();
-            // Foreign key constraint
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // If you want to keep the foreign key, add the user_id column
+            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            // Or, if you only want to keep email, just remove the foreign key
         });
 
         Schema::create('sessions', function (Blueprint $table) {

@@ -16,15 +16,19 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    {{-- !-- Regular asset loading (keep these) --> --}}
+<link rel="stylesheet" href="http://localhost/basic-auth/public/build/assets/app-D-sv12UV.css" />
+<link rel="stylesheet" href="http://localhost/basic-auth/public/build/assets/app-DUEfxN0n.css" />
+<script src="http://localhost/basic-auth/public/build/assets/app-DVyA_kpW.js"></script>
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel Blogs
+                <a class="navbar-brand" href="{{ url('/posts') }}">
+                    Posts
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -58,6 +62,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                        {{ __('Profile') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -67,6 +76,9 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+
+
+
                                 </div>
                             </li>
                         @endguest

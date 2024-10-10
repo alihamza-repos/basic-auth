@@ -36,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
             ->namespace($this->namespace) // Default namespace for your controllers
             ->group(base_path('routes/api.php'));
     }
+    
+
 
 
 }

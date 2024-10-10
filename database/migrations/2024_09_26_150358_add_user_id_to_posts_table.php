@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             // Add a nullable foreign key column for user_id
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            //$table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 

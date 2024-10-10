@@ -1,5 +1,5 @@
 {{-- resources/views/comments/replies.blade.php --}}
-@foreach ($comments as $reply)
+@foreach ($replies as $reply)
     <div style="margin-left: 30px; border-left: 3px solid #ccc; padding: 10px;">
         <strong>{{ $reply->user->name }}</strong>
         <p>{{ $reply->content }}</p>
@@ -15,7 +15,7 @@
 
         {{-- Recursively display replies if they exist --}}
        @if ($reply->replies->isNotEmpty())
-            @include('comments.replies', ['comments' => $reply->replies])
+            @include('comments.replies', ['replies' => $reply->replies])
         @endif
     </div>
 @endforeach

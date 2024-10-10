@@ -15,7 +15,7 @@
 
         {{-- Display replies --}}
         @if ($comment->replies->count() > 0)
-            @include('comments.replies', ['comments' => $comment->replies])
+            @include('comments.replies', ['replies' => $comment->replies])
         @endif
     </div>
 @endforeach
