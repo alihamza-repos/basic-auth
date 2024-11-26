@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer {
+    .btn{
+        @apply   px-4 py-2 rounded-md;
+    }
+    .btn-primary{
+        @apply bg-primary hover:bg-secondary
+    }
+    .btn-secondary{
+        @apply bg-tertiary  hover:bg-black
+    }
+}

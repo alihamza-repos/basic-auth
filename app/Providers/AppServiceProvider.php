@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Policies\PostPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('isAdmin', function(User $user){
+            return $user->role === 'admin';
+        });
+        Gate::define('isAuthor', function(User $user){
+            return $user->role === 'author';
+        });
         // Add this line to register API routes
         $this->mapApiRoutes();
     }
@@ -36,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             ->namespace($this->namespace) // Default namespace for your controllers
             ->group(base_path('routes/api.php'));
     }
-    
+
 
 
 

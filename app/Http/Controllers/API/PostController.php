@@ -1,11 +1,12 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -21,14 +22,8 @@ class PostController extends Controller
         // Fetch posts along with their related user
         $posts = Post::all();
 
-        // Check if the request expects a JSON response (API) or a view (web)
-        if (request()->wantsJson()) {
-            return response()->json($posts);
-        }
+        return response()->json($posts);
 
-        // Return the view for web requests
-
-        return view('posts.index', compact('posts'));
     }
 
     // Show the form for creating a new post

@@ -3,9 +3,6 @@
 @section('content')
     <h1>Uploaded Images</h1>
 
-    @if (session('success'))
-        <div>{{ session('success') }}</div>
-    @endif
 <div class="container">
     @if ($images->isEmpty())
         <p>No images uploaded yet.</p>

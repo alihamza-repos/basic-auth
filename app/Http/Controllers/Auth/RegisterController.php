@@ -53,7 +53,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
         ]);
     }
 
@@ -86,7 +86,7 @@ class RegisterController extends Controller
             $imageUrl = null;
         }
 
-        
+
         // Create the user with the image path
         return User::create([
             'name' => $data['name'],
